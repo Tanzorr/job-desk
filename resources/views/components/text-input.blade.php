@@ -11,7 +11,7 @@
             </svg>
         </button>
         <input x-ref="input-{{ $name }}"
-               type="text"
+               type="{{ $type }}"
                placeholder="{{ $placeholder }}"
                name="{{ $name }}"
                value="{{ $value }}"

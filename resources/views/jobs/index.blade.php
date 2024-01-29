@@ -61,3 +61,4 @@
         </x-job-card>
     @endforeach
 </x-layout>
+
