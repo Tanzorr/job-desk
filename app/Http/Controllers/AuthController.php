@@ -30,10 +30,9 @@ class AuthController extends Controller
         $remember = $request->filled('remember');
 
         if (auth()->attempt($credentials, $remember)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/')->with('success', 'Welcome back!');
         }else{
-            return back()->withErrors([
+            return redirect()->back()->withErrors([
                 'email' => 'Invalid credentials'
             ]);
         }
