@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JobRequest;
+use App\Models\Job;
 use Illuminate\Http\Request;
 
 class MyJobController extends Controller
@@ -11,7 +13,12 @@ class MyJobController extends Controller
      */
     public function index()
     {
-        return view('my_jobs.index');
+        return view('my_jobs.index',
+            ['jobs' => auth()->user()->employer
+                ->jobs()
+                ->withCount('employer','jobApplications' )
+                ->get()
+            ]);
     }
 
     /**
@@ -19,15 +26,19 @@ class MyJobController extends Controller
      */
     public function create()
     {
-        return view('my_jobs.create');
+        return view('my_jobs.create',);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(JobRequest $request)
     {
-        //
+
+        auth()->user()->employer->jobs()->create($request->validated());
+
+        return redirect()->route('my-jobs.index')
+            ->with('success', 'Job created successfully');
     }
 
     /**
@@ -41,17 +52,20 @@ class MyJobController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Job $myJob)
     {
-        //
+        return view('my_jobs.edit', ['job' => $myJob]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(JobRequest $request, Job $myJob)
     {
-        //
+        $myJob->update($request->validated());
+
+        return redirect()->route('my-jobs.index')
+            ->with('success', 'Job updated successfully');
     }
 
     /**

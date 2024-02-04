@@ -1,9 +1,9 @@
 <x-layout>
-    <x-breadcrumbs :links="['My Jobs'=>route('my-jobs.index'), 'Create'=>'#' ]" class="mb-4"/>
+    <x-breadcrumbs :links="['My Jobs'=>route('my-jobs.index'), 'Edit'=>'#' ]" class="mb-4"/>
     <x-card class="mb-8">
-        <form action="{{ route('my-jobs.store') }}" method="POST">
+        <form action="{{ route('my-jobs.update', $job) }}" method="POST">
             @csrf
-            @method('POST')
+            @method('PUT')
 
             <div class="mb-4 grid grid-cols-2 gap-4">
                 <div>
@@ -13,7 +13,7 @@
                         name="title"
                         placeholder="Job title"
                         id="title"
-                        :value="old('title')"
+                        :value="$job->title"
                         required
                     />
                 </div>
@@ -25,7 +25,7 @@
                         name="location"
                         placeholder="Job location"
                         id="title"
-                        :value="old('location')"
+                        :value="$job->location"
                         required
                     />
                 </div>
@@ -37,11 +37,10 @@
                         name="salary"
                         placeholder="Job salary"
                         id="title"
-                        :value="old('salary')"
+                        :value="$job->salary"
                         required
                     />
                 </div>
-
                 <div class="col-span-2">
                     <x-label for="description" :required="true">Job description</x-label>
                     <x-text-input
@@ -49,14 +48,14 @@
                         name="description"
                         placeholder="Job description"
                         id="title"
-                        :value="old('description')"
+                        :value="$job->description"
                         required
                     />
                 </div>
                 <div>
                     <x-label for="experience" :required="true">Experience</x-label>
                     <x-radio-group name="experience"
-                                   :value="old('experience')"
+                                   :value="$job->experience"
                                    :all-option="false"
                                    :options="array_combine(
                             array_map('ucfirst', \App\Models\Job::$experience),
@@ -66,13 +65,13 @@
                 <div>
                     <x-label for="category" :required="true">Category</x-label>
                     <x-radio-group name="category"
-                                   :value="old('category')"
+                                   :value="$job->category"
                                    :all-option="false"
                                    :options="\App\Models\Job::$categories"
                     />
                 </div>
             </div>
-            <x-button class="w-full">Create Job</x-button>
+            <x-button class="w-full">Edit Job</x-button>
         </form>
     </x-card>
 </x-layout>

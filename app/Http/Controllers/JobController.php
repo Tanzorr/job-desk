@@ -14,6 +14,7 @@ class JobController extends Controller
     {
         $filters = request()->only(['search', 'min_salary', 'max_salary', 'experience', 'category']);
         $jobs = Job::with('employer')
+            ->latest()
             ->filter($filters)
             ->paginate(10)
             ->withQueryString();
